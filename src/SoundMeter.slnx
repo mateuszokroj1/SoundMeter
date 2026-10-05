@@ -1,2 +1,8 @@
 <Solution>
+  <Folder Name="/Application/" />
+  <Folder Name="/Framework/" />
+  <Folder Name="/Framework/CAD/">
+    <Project Path="libs/CAD/CAD.Units/Units.csproj" Id="89955546-debd-4b44-a2d1-7e9168ac5f1f" />
+    <Project Path="libs/CAD/CAD.Visualization.Core/Visualization.Core.csproj" />
+  </Folder>
 </Solution>

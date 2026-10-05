@@ -4,8 +4,8 @@
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <AssemblyName>SoundMeter.Models</AssemblyName>
-    <RootNamespace>SoundMeter.Models</RootNamespace>
+    <AssemblyName>SoundMeter.Framework.CAD.Visualization.Core</AssemblyName>
+    <RootNamespace>SoundMeter.Framework.CAD.Visualization</RootNamespace>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <SignAssembly>False</SignAssembly>
     
