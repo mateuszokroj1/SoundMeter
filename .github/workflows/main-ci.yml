@@ -33,7 +33,7 @@ jobs:
     steps:
 
       - name: Cache
-        uses: actions/cache@v5.1.0
+        uses: actions/cache@v6.1.0
         with:
           # A list of files, directories, and wildcard patterns to cache and restore
           path: '${{ github.workspace }}'
@@ -43,7 +43,7 @@ jobs:
           #restore-keys: # optional
     
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7.0.1
         timeout-minutes: 5
         name: Git Checkout
 
@@ -60,7 +60,7 @@ jobs:
       - name: Setup .NET Core SDK
         uses: actions/setup-dotnet@v6.0.0
         with:
-          cache: true
+          workloads: maui
 
       - name: .NET restore
         timeout-minutes: 5
