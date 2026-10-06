@@ -3,7 +3,7 @@
 name: CI
 
 env:
-  dotnet-version: '10.x'
+  solution-path: '${{ github.workspace }}/src/SoundMeter.slnx'
 
 # Controls when the workflow will run
 on:
@@ -21,23 +21,56 @@ jobs:
   # This workflow contains a single job called "build"
   build:
     # The type of runner that the job will run on
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.runsOn }}
+
+    timeout-minutes: 30
 
     strategy:
       matrix:
-        runsOn: ['ubuntu-latest', 'windows-latest', '']
+        runsOn: ['ubuntu-latest', 'ubuntu-26.04-arm', 'windows-latest', 'windows-11-arm', 'macos-latest', 'macos-15-intel']
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+
+      - name: Cache
+        uses: actions/cache@v5.1.0
+        with:
+          # A list of files, directories, and wildcard patterns to cache and restore
+          path: '${{ github.workspace }}'
+          # An explicit key for restoring and saving the cache
+          key: main-ci-cache
+          # An ordered multiline string listing the prefix-matched keys, that are used for restoring stale cache if no cache hit occurred for key. Note `cache-hit` returns false in this case.
+          #restore-keys: # optional
+    
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v4
+        timeout-minutes: 5
+        name: Git Checkout
 
-      # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo Hello, world!
+      - name: Setup .NET Core SDK
+        uses: actions/setup-dotnet@v6.0.0
+        with:
+          cache: net-core-sdk-cache
 
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
-        run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+      - name: .NET restore
+        timeout-minutes: 5
+        run: dotnet restore ${{ env.solution-path }}
+
+      - name: .NET build Debug
+        timeout-minutes: 20
+        run: dotnet build ${{ env.solution-path }} --configuration Debug
+
+      - name: .NET run tests
+        timeout-minutes: 20
+        env:
+          DOTNET_TEST_RUNNER: 'Microsoft.Testing.Platform'
+        run: dotnet test
+
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v7.0.1
+        with:
+          # Artifact name. If the `archive` input is `false`, the name of the file uploaded will be the artifact name.
+          name: SoundMeter-MainCI-${{ github.event.repository.updated_at }}
+          # A file, directory or wildcard pattern that describes what to upload.
+          path: '${{ github.workspace }}'
+          retention-days: 31
