@@ -10,6 +10,7 @@ on:
   # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
     branches: [ "main" ]
+    branches-ignore: "release/*"
   pull_request:
     branches: [ "main" ]
 
@@ -47,6 +48,16 @@ jobs:
         timeout-minutes: 5
         name: Git Checkout
 
+      - name: Get branch name
+        id: get-branch-name
+        run: |
+          if [ "${{ github.event_name }}" == "pull_request" ]; then
+            echo "BRANCH_NAME=${{ github.head_ref }}" >> $GITHUB_OUTPUT
+          else
+            echo "BRANCH_NAME=${GITHUB_REF##*/}" >> $GITHUB_OUTPUT
+          fi
+        shell: bash
+
       - name: Setup .NET Core SDK
         uses: actions/setup-dotnet@v6.0.0
         with:
@@ -70,7 +81,7 @@ jobs:
         uses: actions/upload-artifact@v7.0.1
         with:
           # Artifact name. If the `archive` input is `false`, the name of the file uploaded will be the artifact name.
-          name: SoundMeter-MainCI-${{ github.event.repository.updated_at }}
+          name: SoundMeter-MainCI-${{ steps.get-branch-name.outputs.BRANCH_NAME }}-${{ github.event.repository.updated_at }}
           # A file, directory or wildcard pattern that describes what to upload.
           path: '${{ github.workspace }}'
           retention-days: 31
