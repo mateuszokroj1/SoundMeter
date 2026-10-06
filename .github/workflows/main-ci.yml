@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: CI
+name: Main CI
 
 env:
   solution-path: '${{ github.workspace }}/src/SoundMeter.slnx'
@@ -27,7 +27,7 @@ jobs:
 
     strategy:
       matrix:
-        runsOn: ['ubuntu-latest', 'ubuntu-26.04-arm', 'windows-latest', 'windows-11-arm', 'macos-latest', 'macos-15-intel']
+        runsOn: ['windows-latest', 'windows-11-arm', 'macos-latest', 'macos-15-intel']
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
