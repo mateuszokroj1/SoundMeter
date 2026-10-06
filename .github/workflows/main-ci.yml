@@ -10,7 +10,6 @@ on:
   # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
     branches: [ "main" ]
-    branches-ignore: "release/*"
   pull_request:
     branches: [ "main" ]
 
@@ -73,8 +72,6 @@ jobs:
 
       - name: .NET run tests
         timeout-minutes: 20
-        env:
-          DOTNET_TEST_RUNNER: 'Microsoft.Testing.Platform'
         run: dotnet test
 
       - name: Upload a Build Artifact
