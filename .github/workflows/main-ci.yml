@@ -60,7 +60,7 @@ jobs:
       - name: Setup .NET Core SDK
         uses: actions/setup-dotnet@v6.0.0
         with:
-          cache: net-core-sdk-cache
+          cache: true
 
       - name: .NET restore
         timeout-minutes: 5
