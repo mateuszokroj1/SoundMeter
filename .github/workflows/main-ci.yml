@@ -4,6 +4,8 @@ name: Main CI
 
 env:
   solution-path: '${{ github.workspace }}/src/SoundMeter.slnx'
+  DOTNET_ROOT: '$HOME/dotnet'
+  DOTNET_INSTALL_DIR: '$HOME/dotnet'
 
 # Controls when the workflow will run
 on:
@@ -39,9 +41,17 @@ jobs:
           # A list of files, directories, and wildcard patterns to cache and restore
           path: '${{ github.workspace }}'
           # An explicit key for restoring and saving the cache
-          key: main-ci-cache
+          key: main-ci-${{ runner.os }}-cache
           # An ordered multiline string listing the prefix-matched keys, that are used for restoring stale cache if no cache hit occurred for key. Note `cache-hit` returns false in this case.
-          #restore-keys: # optional
+
+      - name: Cache
+        uses: actions/cache@v6.1.0
+        with:
+          # A list of files, directories, and wildcard patterns to cache and restore
+          path: ${{ env.dotnet-root }}
+          # An explicit key for restoring and saving the cache
+          key: main-ci-dotnet-${{ runner.os }}-cache
+          # An ordered multiline string listing the prefix-matched keys, that are used for restoring stale cache if no cache hit occurred for key. Note `cache-hit` returns false in this case.
     
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v7.0.1
