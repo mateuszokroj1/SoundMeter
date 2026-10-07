@@ -51,7 +51,7 @@ jobs:
         id: get-branch-name
         run: |
           if [ "${{ github.event_name }}" == "pull_request" ]; then
-            set var="${{ github.head_ref }}
+            set var="${{ github.head_ref }}"
           else
             set var="${GITHUB_REF##*/}"
           fi
