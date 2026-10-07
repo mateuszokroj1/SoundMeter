@@ -75,11 +75,15 @@ jobs:
         run: dotnet test ${{ env.solution-path }}
         continue-on-error: true
 
+      - name: Set current date as env variable
+        id: datetime
+        run: echo "NOW=$(date +'%Y-%m-%dT%H-%M-%S')" >> $GITHUB_OUTPUT
+
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v7.0.1
         with:
           # Artifact name. If the `archive` input is `false`, the name of the file uploaded will be the artifact name.
-          name: SoundMeter-MainCI-${{ steps.get-branch-name.outputs.BRANCH_NAME }}-${{ github.event.repository.updated_at }}
+          name: SoundMeter-MainCI-${{ steps.get-branch-name.outputs.BRANCH_NAME }}-${{ steps.datetime.outputs.NOW }}
           # A file, directory or wildcard pattern that describes what to upload.
           path: '${{ github.workspace }}'
           retention-days: 31
