@@ -51,10 +51,12 @@ jobs:
         id: get-branch-name
         run: |
           if [ "${{ github.event_name }}" == "pull_request" ]; then
-            echo "BRANCH_NAME=${{ github.head_ref }}" >> $GITHUB_OUTPUT
+            set var="${{ github.head_ref }}
           else
-            echo "BRANCH_NAME=${GITHUB_REF##*/}" >> $GITHUB_OUTPUT
+            set var="${GITHUB_REF##*/}"
           fi
+
+          echo "BRANCH=${$var///_}" >> $GITHUB_OUTPUT
         shell: bash
 
       - name: Setup .NET Core SDK
