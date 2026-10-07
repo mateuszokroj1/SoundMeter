@@ -56,7 +56,7 @@ jobs:
             set var="${GITHUB_REF##*/}"
           fi
 
-          echo "BRANCH=${$var///_}" >> $GITHUB_OUTPUT
+          echo "BRANCH=${var//\//_}" >> $GITHUB_OUTPUT
         shell: bash
 
       - name: Setup .NET Core SDK
