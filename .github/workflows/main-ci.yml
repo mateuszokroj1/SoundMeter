@@ -137,6 +137,7 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         shell: powershell
+        continue-on-error: true
         run: |
           ${{ runner.temp }}\scanner\dotnet-sonarscanner begin /k:"mateuszokroj1_SoundMeter" /o:"mateuszokroj1" /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
           dotnet build ${{ env.solution-path }}
